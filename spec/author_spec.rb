@@ -24,7 +24,7 @@ end
       @villette = @charlotte_bronte.write("Villette", "1853")
       expect(@jane_eyre.title).to eq("Jane Eyre")
       expect(@jane_eyre.class).to eq(Book)
-      expect(@charlotte_bronte.books).to eq(@jane_eyre, @villette)
+      expect(@charlotte_bronte.books).to eq([@jane_eyre, @villette])
     end 
   end
 
@@ -33,7 +33,7 @@ end
       expect(@charlotte_bronte.books).to eq([])
       @jane_eyre = @charlotte_bronte.write("Jane Eyre", "October 16, 1847")
       @villette = @charlotte_bronte.write("Villette", "1853")
-      expect(@charlotte_bronte.books).to eq(@jane_eyre, @villette)
+      expect(@charlotte_bronte.books).to eq([@jane_eyre, @villette])
     end
   end
 end
