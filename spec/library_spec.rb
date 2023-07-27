@@ -4,10 +4,17 @@ require './lib/library'
 
 RSpec.describe Library do
   before(:each) do
-  @book = Book.new({author_first_name: "Harper", author_last_name: "Lee", title: "To Kill a Mockingbird", publication_date: "July 11, 1960"})
-  @charlotte_bronte = Author.new({first_name: "Charlotte", last_name: "Bronte"})
   @dpl = Library.new("Denver Public Library")
-  end
+
+  @harper_lee = Author.new({first_name: "Harper", last_name: "Lee"})
+  @charlotte_bronte = Author.new({first_name: "Charlotte", last_name: "Bronte"})
+
+  @jane_eyre = @charlotte_bronte.write("Jane Eyre", "October 16, 1847")    
+  @professor = @charlotte_bronte.write("The Professor", "1857")  
+  @villette = @charlotte_bronte.write("Villette", "1853")  
+  @mockingbird = @harper_lee.write("To Kill a Mockingbird", "July 11, 1960")
+
+end
 
   describe "#initialize" do
     it "instantiates a new object" do
@@ -15,27 +22,23 @@ RSpec.describe Library do
     end
 
     it "has attributes" do
-      expect(@charlotte_bronte.name).to eq("Charlotte Bronte")
-      expect(@charlotte_bronte.books).to eq([])
+      expect(@dpl.name).to eq("Denver Public Library")
+      expect(@dpl.books).to eq([])
+      expect(@dpl.authors).to eq([])
     end
   end
 
-  describe "#write" do
-    it "creates a book written by an author" do
-      @jane_eyre = @charlotte_bronte.write("Jane Eyre", "October 16, 1847")
-      @villette = @charlotte_bronte.write("Villette", "1853")
-      expect(@jane_eyre.title).to eq("Jane Eyre")
-      expect(@jane_eyre.class).to eq(Book)
-      expect(@charlotte_bronte.books).to eq(@jane_eyre, @villette)
-    end 
+  describe "add_author" do
+    it "adds and author to the library list" do
+      @dpl.add_author(@charlotte_bronte)
+      @dpl.add_author(@harper_lee)
+      expect(@dpl.authors).to eq([@charlotte_bronte, @harper_lee])
+    end
   end
 
-  describe "#books" do
-    it "holds a list of books the author wrote" do
-      expect(@charlotte_bronte.books).to eq([])
-      @jane_eyre = @charlotte_bronte.write("Jane Eyre", "October 16, 1847")
-      @villette = @charlotte_bronte.write("Villette", "1853")
-      expect(@charlotte_bronte.books).to eq(@jane_eyre, @villette)
+  describe "publication_time_frame_for" do
+    it "shows an authors publication year of first and last book" do
+      expect(@dpl.publication_time_frame_for(@charlotte_bronte)).to eq({start: "1847", end: "1857"})
     end
   end
 end
